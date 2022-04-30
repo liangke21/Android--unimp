@@ -2,7 +2,6 @@ package com.example.myapplication
 
 
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.ProgressBar
@@ -26,14 +25,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var name = ""
+        var path = ""
 
-        var name: String
-        var path: String
+        findViewById<Button>(R.id.button3).setOnClickListener {//获取异步的小程序
+            getYunWgt("/wgt/__UNI__58E29BC", "__UNI__58E29BC", object : OnDownloadListener {
 
-        findViewById<Button>(R.id.button3).setOnClickListener {
-            getYunWgt("/wgt/__UNI__FC58B10.wgt", "__UNI__FC58B10", object : OnDownloadListener {
-
-                override fun onDownloadSuccess(file: File?,n: String) {
+                override fun onDownloadSuccess(file: File?, n: String) {
                     path = file!!.path
                     name = n
                 }
@@ -50,13 +48,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val wgt = getWgt("__UNI__FC58B10")
-        name = wgt.name
-        path = wgt.path
+        val (name1, path1) = getWgt("__UNI__FC58B10")
 
 
-        findViewById<Button>(R.id.button).setOnClickListener {
-
+        fun releaseAndStart(name: String, path: String) {
             val uniMPReleaseConfiguration = UniMPReleaseConfiguration()
             uniMPReleaseConfiguration.wgtPath = path
             uniMPReleaseConfiguration.password = null
@@ -74,25 +69,39 @@ class MainActivity : AppCompatActivity() {
                     println("释放失败")
                 }
             }
-
         }
+        findViewById<Button>(R.id.button).setOnClickListener {//释放wgt并启动
+
+            releaseAndStart(name1, path1)
+        }
+
+        findViewById<Button>(R.id.button4).setOnClickListener {//释放
+            releaseAndStart(name, path)
+        }
+
 
         findViewById<Button>(R.id.button2).setOnClickListener {//启动小程序
 
             try {
                 val uniMPOpenConfiguration = UniMPOpenConfiguration()
                 uniMPOpenConfiguration.splashClass = MySplashView::class.java
-                DCUniMPSDK.getInstance().openUniMP(context, "__UNI__FC58B10", uniMPOpenConfiguration)
+                DCUniMPSDK.getInstance().openUniMP(context, name, uniMPOpenConfiguration)
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
 
         }
 
-        DCUniMPSDK.getInstance().setDefMenuButtonClickCallBack { appid, id ->
+
+
+
+
+
+
+        DCUniMPSDK.getInstance().setDefMenuButtonClickCallBack { aphid, id ->
             when (id) {
                 "gy" -> {
-                    println(appid + "用户点击了关于")
+                    println(aphid + "aphid")
                 }
             }
         }
@@ -109,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     private fun getYunWgt(urlM: String, fileName: String, listener: OnDownloadListener) {
 
 
-        val url = "https://55-1251889734.cos.ap-beijing-1.myqcloud.com$urlM"
+        val url = "https://55-1251889734.cos.ap-beijing-1.myqcloud.com$urlM.wgt"
 
         println(url)
         val okHttpClient = OkHttpClient()
@@ -144,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     fos.flush()
                     // 下载完成
-                    listener.onDownloadSuccess(file,fileName)
+                    listener.onDownloadSuccess(file, fileName)
                 } catch (e: java.lang.Exception) {
                     listener.onDownloadFailed()
                 } finally {
@@ -206,7 +215,7 @@ class MainActivity : AppCompatActivity() {
         /**
          * 下载成功
          */
-        fun onDownloadSuccess(file: File?,name: String)
+        fun onDownloadSuccess(file: File?, n: String)
 
         /**
          * @param progress

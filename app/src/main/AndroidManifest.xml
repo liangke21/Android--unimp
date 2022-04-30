@@ -22,10 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <!--密钥-->
+ <!--        &lt;!&ndash;密钥&ndash;&gt;
         <meta-data android:name="UMENG_APPKEY" android:value="2193ce78454fb7a4c948d29fb0b1d210
 
-"/>
+"/>-->
     </application>
 
 </manifest>
