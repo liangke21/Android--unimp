@@ -68,11 +68,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 
 
+    /**
+     * Get wgt
+     *  assets 文件转本地文件
+     * @param name
+     * @return
+     */
     private fun getWgt(name: String): Wat {
 
         val open = applicationContext.assets.open("wgt/$name")

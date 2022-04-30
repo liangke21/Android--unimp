@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 
 import io.dcloud.feature.sdk.Interface.IDCUniMPAppSplashView;
 
+/**
+ * 启动动画
+ */
 public class MySplashView implements IDCUniMPAppSplashView {
     FrameLayout splashView;
 
@@ -25,6 +29,11 @@ public class MySplashView implements IDCUniMPAppSplashView {
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
         lp.gravity = Gravity.CENTER;
         splashView.addView(textView, lp);
+
+
+
+
+        Log.d("ddd",s1+" ggggggggggg  "+s2);
         return splashView;
     }
 
