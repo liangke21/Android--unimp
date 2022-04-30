@@ -20,26 +20,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val (name, path) = getWgt("__UNI__FC58B10.wgt")
+        val (name, path) = getWgt("__UNI__FC58B10")
 
 
         findViewById<Button>(R.id.button).setOnClickListener {
 
             val uniMPReleaseConfiguration = UniMPReleaseConfiguration()
             uniMPReleaseConfiguration.wgtPath = path
-            uniMPReleaseConfiguration.password =null
+            uniMPReleaseConfiguration.password = null
 
             DCUniMPSDK.getInstance().releaseWgtToRunPath("__UNI__FC58B10", uniMPReleaseConfiguration) { code, pArgs ->
                 if (code == 1) {
 
                     try {
-                        DCUniMPSDK.getInstance().openUniMP(this@MainActivity, "__UNI__FC58B10")
+                        DCUniMPSDK.getInstance().openUniMP(this@MainActivity, name)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                     println("释放完成")
                 } else {
-                    //释放wgt失败
                     println("释放失败")
                 }
             }
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val uniMPOpenConfiguration = UniMPOpenConfiguration()
                 uniMPOpenConfiguration.splashClass = MySplashView::class.java
-                val unimp = DCUniMPSDK.getInstance().openUniMP(context, "__UNI__FC58B10",uniMPOpenConfiguration)
+                DCUniMPSDK.getInstance().openUniMP(context, "__UNI__FC58B10", uniMPOpenConfiguration)
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
@@ -79,11 +78,11 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getWgt(name: String): Wat {
 
-        val open = applicationContext.assets.open("wgt/$name")
+        val open = applicationContext.assets.open("wgt/$name.wgt")
 
         val readBytes = open.readBytes()
         val path = getExternalFilesDir("wgt")?.path
-        val file = File("$path/$name")
+        val file = File("$path/$name.wgt")
         val fileOutputStream = FileOutputStream(file)
 
         fileOutputStream.write(readBytes)
